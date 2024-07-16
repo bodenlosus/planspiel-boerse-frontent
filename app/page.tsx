@@ -1,113 +1,239 @@
-import Image from "next/image";
+"use client"
+
+import * as ScrollArea from '@radix-ui/react-scroll-area';
+
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ComposedChart,
+  Dot,
+  Label,
+  LabelList,
+  Legend,
+  Line,
+  PolarGrid,
+  PolarRadiusAxis,
+  RadialBar,
+  RadialBarChart,
+  ReferenceLine,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card';
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { ChevronUp, PiggyBank, TrendingDown, TrendingUp } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
+import DotEffect from '@/components/dot_effect';
+import { NavBar } from '@/components/navbar/navbar';
+import { to_display_string } from '@/lib/cash_display_string';
+import get_sign from '@/lib/get_sign';
+import * as React from 'react';
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+      <main className="grow mt-5 mx-5 max-sm:h[1px] overflow-hidden">
+          <Tabs defaultValue="day" className="w-full h-full flex flex-col max-sm:items-center">
+            <TabsList className="w-full justify-stretch">
+              <TabsTrigger value="day">Today</TabsTrigger>
+              <TabsTrigger value="week">Past Week</TabsTrigger>
+              <TabsTrigger value="month">Past Month</TabsTrigger>
+              <TabsTrigger value="year">Past Year</TabsTrigger>
+            </TabsList>
+            <TabsContent className="flex w-full grow overflow-y-scroll" value="day">
+              <BentoGrid></BentoGrid>
+            </TabsContent>
+          </Tabs>
+      </main>
+  );
+}
+
+export function BentoGrid(){
+  
+
+  return (
+    <div className="m-5 mt-5 h-max w-full grid grid-cols-2 md:grid-cols-6 2xl:grid-cols-8 grid-rows-6 gap-5 overflow-x-hidden">
+      <BankBalanceBentoCell/>
+      <WinLossBentoCell span={{x:2, y:2}}/>
+      <DotEffect>
+      <Card className="dotted-background col-span-2 md:col-span-4 row-span-2">
+        <CardHeader>
+          <CardTitle></CardTitle>
+          <CardDescription></CardDescription>
+        </CardHeader>
+        <CardContent></CardContent>
+        <CardFooter></CardFooter>
+      </Card>
+      </DotEffect>
+      <DotEffect>
+      <Card className="dotted-background col-span-2 md:col-span-4 row-span-12">
+        <CardHeader>
+          <CardTitle></CardTitle>
+          <CardDescription></CardDescription>
+        </CardHeader>
+        <CardContent></CardContent>
+        <CardFooter></CardFooter>
+      </Card>
+      </DotEffect>
+    </div>
+  );
+}
+
+interface BentoCellProps{
+  span: {x:number, y:number};
+}
+
+export function BankBalanceBentoCell(){
+  const intervall_profit:number = -13789
+  const overall_profit: number = 1234567
+
+  const intervall_start:Date = new Date("08-07-2024")
+
+  const intervall_end:Date = new Date("15-07-2024")
+
+  const profit_indicator: { [key: string]: React.ReactNode } = {
+    "+":<span className='self-center font-bold text-3xl text-muted-foreground'>+</span>,
+    "-":<span className='self-center font-bold text-3xl text-muted-foreground'>-</span>,
+    "":<></>,
+  }
+
+  return(
+  <DotEffect>
+      <Card className="dotted-background col-span-2 row-span-2 line">
+        <CardHeader>
+          <CardTitle className="text-xl font-medium">Profit</CardTitle>
+          <CardDescription>
+            {intervall_start.toDateString()} - {intervall_end.toDateString()}
+            </CardDescription>
+        </CardHeader>
+        <CardContent className="">
+          <div className='flex gap-2'>
+            {profit_indicator[get_sign(intervall_profit)]}
+            <span className='text-5xl font-bold'>{to_display_string(intervall_profit, 1, true)}</span>
+            <span className='text-xl font-semibold text-muted-foreground'>€</span>
+          </div>
+          <div className="ml-10 flex gap-[0.5]">
+            <span className="text-s self-center text-muted-foreground">{get_sign(overall_profit)}</span>
+            <span className='text-lg font-medium text-muted-foreground'>
+              {to_display_string(overall_profit, 1, true)}
+              €
+            </span>
+          </div>
+        </CardContent>
+        <CardFooter></CardFooter>
+      </Card>
+      </DotEffect>
+  )
+}
+
+export function WinLossBentoCell({span}:BentoCellProps){
+  let base_data  = [
+    {timestamp:new Date("2024-07-10"), gained:134, lost:-56},
+    {timestamp:new Date("2024-07-11"), gained:90, lost:-34},
+    {timestamp:new Date("2024-07-12"), gained:101, lost:-94},
+    {timestamp:new Date("2024-07-13"), gained:130, lost:-50},
+    {timestamp:new Date("2024-07-14"), gained:110, lost:-140},
+    {timestamp:new Date("2024-07-15"), gained:10, lost:-80},
+    {timestamp:new Date("2024-07-16"), gained:10, lost:-80},
+  ]
+
+  let total_gain:number = 0;
+
+  let data = base_data.map((day:{timestamp: Date, gained:number, lost:number}) => {
+    total_gain += day.gained + day.lost
+    return(
+      {...day, ...{
+        timestamp: day.timestamp.toLocaleDateString(undefined, {month: "numeric", day: "numeric"}), 
+        gain:total_gain
+      }}
+    )
+  })
+
+  const chartConfig = {
+    gained: {
+      label: "Gained",
+      color: "hsl(var(--win))",
+    },
+    lost: {
+      label: "Spent",
+      color: "hsl(var(--loss))",
+    },
+    gain: {
+      label: "Total Gain",
+      color: "hsl(var(--accent))",
+    },
+  } satisfies ChartConfig
+
+  const grid_size_class = `col-span-${span.x} row-span-${span.y}`
+
+  return (
+    <DotEffect>
+      <Card className={`dotted-background ${grid_size_class} line`}>
+
+        <CardHeader>
+          <CardTitle className="text-xl font-medium">Spent vs. Gained</CardTitle>
+          <CardDescription>Money spent and gained per Day from {base_data[0].timestamp.toDateString()} to {base_data[base_data.length - 1].timestamp.toDateString()}
+            </CardDescription>
+        </CardHeader>
+
+        <CardContent>
+
+        <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+          <ComposedChart margin={{
+            top: 0,
+            right: 0,
+            left: 0,
+            bottom: 0,
+          }} accessibilityLayer stackOffset="sign" data={data}>
+          
+            <CartesianGrid vertical={false} />
+            <XAxis angle={90} axisLine={false} dataKey="timestamp" />
+            <YAxis width={0} axisLine={false} tick={false} padding={{bottom:30, top:20}}/>
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent indicator="dashed" />}
             />
-          </a>
-        </div>
-      </div>
+            <ReferenceLine y={0} stroke="var(--border)" />
+            <Bar dataKey="lost"
+              unit="€" 
+              barSize={10} 
+              stackId="1" radius={4}  
+              fill="var(--color-lost)">
 
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+              <LabelList dataKey="lost" offset={7} position="top" />
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+            </Bar>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+            <Bar dataKey="gained" 
+              unit="€" barSize={10} 
+              stackId="1" 
+              radius={4} 
+              fill="var(--color-gained)">
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
+                <LabelList dataKey="gained" offset={7} position="top" />
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+            </Bar>
+
+            <Line 
+              dataKey="gain" 
+              dot={false} 
+              type="monotone" 
+              stroke="var(--color-gain)" />
+
+            </ComposedChart>
+          </ChartContainer>
+        </CardContent>
+        <CardFooter></CardFooter>
+      </Card>
+    </DotEffect>
   );
 }
