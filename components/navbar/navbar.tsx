@@ -21,8 +21,8 @@ import { useTheme } from "next-themes"
 
 export function NavBar() {
   return(
-    <nav className="flex flex-row w-fill h-min sm:flex-col sm:h-lvh sm:w-min items-center justify-between p-2 border max-sm:m-3 max-sm:rounded-lg ">
-      <div className="flex flex-row max-sm:space-x-3 sm:flex-col sm:space-y-3 max-sm:grow max-sm:justify-around">
+    <nav className="flex flex-row w-fit min-w-fit h-min sm:flex-col sm:h-lvh sm:w-fit sm:min-w-fit items-start justify-between p-2 max-sm:m-3 max-sm:rounded-lg ">
+      <div className="flex flex-row max-sm:space-x-3 sm:flex-col sm:space-y-3 max-sm:grow max-sm:justify-around w-full">
         {/* User Profile */}
         <UserProfile userName="Johannes Schmidt"/>
 
@@ -51,16 +51,17 @@ export function NavBar() {
 
 interface NavBarPageButtonProps {
   /** The text to display inside the button */
-  title: string;
+  title: string
 
   /** Whether the button can be interacted with */
-  link:string;
+  link:string
 
-  usePath?:boolean;
+  usePath?:boolean
 
   className?:string
 
   children?:React.ReactNode
+
 }
 
 export function NavBarPageButton(
@@ -79,7 +80,7 @@ export function NavBarPageButton(
             href={link}
             className={`${(usePath === true && pathname === link) ?  active_util_class: ""} flex size-9 max-sm:size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground`}
           >
-            {children}
+              {children}
             <span className="sr-only">{title}</span>
           </Link>
         </TooltipTrigger>
