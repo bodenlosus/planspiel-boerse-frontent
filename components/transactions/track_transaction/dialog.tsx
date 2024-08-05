@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -16,7 +15,9 @@ import { TrackTransactionForm } from "./form";
 export default function TrackTransactionDialog() {
   return (
     <Dialog>
-      <DialogTrigger>Track</DialogTrigger>
+      <DialogTrigger asChild>
+        <Button variant="outline">Track</Button>
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Track a recent transaction</DialogTitle>

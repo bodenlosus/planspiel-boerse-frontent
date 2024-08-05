@@ -1,12 +1,12 @@
-import TransactionCategorie from '@/lib/transaction_categorie';
+import TransactionCategorie from '@/lib/categories/categorie';
 export default class Transaction{
-    id: number;
+    id: string;
     title:string;
     timestamp: Date;
     categorie: TransactionCategorie;
     amount: number;
 
-    constructor(id:number, title:string, timestamp:Date, categorie:TransactionCategorie, amount:number){
+    constructor(id:string, title:string, timestamp:Date, categorie:TransactionCategorie, amount:number){
         this.id = id;
         this.title = title
         this.timestamp = timestamp;

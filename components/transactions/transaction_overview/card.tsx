@@ -8,34 +8,14 @@ import {
 } from "@/components/ui/card";
 
 import { Badge } from "@/components/ui/badge";
-import Transaction from "@/lib/transaction";
-import TransactionCategorie from "@/lib/transaction_categorie";
-
-interface TransactionOverviewProps {
-  transactions: Array<Transaction>
-}
-
-export default function TransactionOverview({transactions}:TransactionOverviewProps) {
-
-  return (
-    <ul className="m-5 flex flex-col gap-5">
-      {transactions.map((t: Transaction, index: number) => {
-        return (
-          <li key={index}>
-            <TransactionCard {...t} />
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
+import TransactionCategorie from "@/lib/categories/categorie";
 
 interface TransactionCardProps {
   title: string;
   timestamp: Date;
   categorie: TransactionCategorie;
   amount: number;
-  id: number;
+  id: string;
 }
 
 export function TransactionCard({

@@ -16,17 +16,11 @@ import { FormControl } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 
-interface DatePickerWithPresetsProps {
-  field: ControllerRenderProps<
-    {
-      title: string;
-      timestamp: Date;
-    },
-    "timestamp"
-  >;
+interface props {
+  field: ControllerRenderProps<any>;
 }
 
-export function DatePickerWithPresets({ field }: DatePickerWithPresetsProps) {
+export function DatePickerWithPresets({ field }: props) {
   const [date, setDate] = React.useState<Date>();
 
   return (

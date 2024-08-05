@@ -3,9 +3,10 @@ import "./globals.css";
 import { Inter as FontSans } from "next/font/google";
 import type { Metadata } from "next";
 import { NavBar } from "@/components/navbar/navbar";
-import { ThemeProvider } from "@/components/theme-provider"
-import Transaction from '@/lib/transaction';
-import { cn } from "@/lib/utils"
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
+import { TransactionProvider } from "@/lib/transactions/transaction_provider";
+import { cn } from "@/lib/utils";
 
 const inter = FontSans({ subsets: ["latin"] });
 
@@ -17,9 +18,7 @@ export const metadata: Metadata = {
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
-})
-
-
+});
 
 export default function RootLayout({
   children,
@@ -44,8 +43,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <NavBar />
-          {children}
+          <TransactionProvider>{children}</TransactionProvider>
+          
         </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );

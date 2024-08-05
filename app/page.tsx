@@ -1,43 +1,24 @@
 "use client";
 
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  TransactionContext,
+  TransactionProvider,
+} from "@/lib/transactions/transaction_provider";
 
-import { Button } from "@/components/ui/button";
-import TrackTransactionDialog from "@/components/transactions/track_transaction/track_transaction";
-import Transaction from "@/lib/transaction";
-import TransactionCategorie from "@/lib/transaction_categorie";
-import TransactionOverview from "@/components/transactions/transaction_overview/transaction_overview";
-
-const categories = [
-  new TransactionCategorie("red", "groceries", "Groceries"),
-  new TransactionCategorie("green", "cosmetics", "Cosmetics"),
-];
-
-const transactions = [
-  new Transaction(1, "EDEKA BIENEK", new Date(Date.now()), categories[0], 1),
-  new Transaction(1, "ROSSMANN", new Date(Date.now()), categories[1], -1),
-];
+import TrackTransactionDialog from "@/components/transactions/track_transaction/dialog";
+import Transaction from "@/lib/transactions/transaction";
+import TransactionCategorie from "@/lib/categories/categorie";
+import TransactionOverview from "@/components/transactions/transaction_overview/overview";
+import { useContext } from "react";
 
 export default function Home() {
+  const transactions = useContext(TransactionContext);
   return (
     <main className="grow mt-5 mx-5 max-sm:h[1px] overflow-hidden">
       <ResizablePanelGroup direction="horizontal">
@@ -60,8 +41,9 @@ export default function Home() {
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel>
-          <TrackTransactionDialog></TrackTransactionDialog>
-          <TransactionOverview transactions={[]}></TransactionOverview>
+          <TrackTransactionDialog />
+
+          <TransactionOverview transactions={transactions} />
         </ResizablePanel>
       </ResizablePanelGroup>
     </main>
