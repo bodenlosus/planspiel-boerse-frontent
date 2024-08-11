@@ -17,7 +17,7 @@ import TransactionCategorie from "@/lib/categories/categorie";
 import TransactionOverview from "@/components/transactions/transaction_overview/overview";
 import { useContext } from "react";
 
-export default function Home() {
+export default function Dashboard() {
   const transactions = useContext(TransactionContext);
   return (
     <main className="grow mt-5 mx-5 max-sm:h[1px] overflow-hidden">

@@ -1,6 +1,6 @@
-import "./globals.css";
+import "@/app/globals.css";
 
-import { Inter as FontSans } from "next/font/google";
+import { Rubik as FontSans } from "next/font/google";
 import type { Metadata } from "next";
 import { NavBar } from "@/components/navbar/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -42,9 +42,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NavBar />
-          <TransactionProvider>{children}</TransactionProvider>
-          
+          {children}
         </ThemeProvider>
         <Toaster />
       </body>
