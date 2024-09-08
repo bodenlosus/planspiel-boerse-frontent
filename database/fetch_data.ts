@@ -1,5 +1,6 @@
+import { Stock, StockPrice } from "./custom_types";
+
 import { Database } from "./supabase_types";
-import { StockPrice } from "./custom_types";
 import { supabase } from "./client";
 export async function fetchPricesForInterval(
   id: number,
@@ -20,14 +21,14 @@ export async function fetchPricesForInterval(
 }
 
 export interface TfetchStockData {
-  info: Array<StockPrice>;
+  info: Array<Stock>;
   prices: Array<StockPrice>;
   success: boolean;
 }
 export async function fetchStockData(args: {
   id: number;
   start: string;
-  end: number;
+  end: string;
 }): Promise<TfetchStockData> {
   // Handle responses and errors individually
   try {

@@ -76,37 +76,4 @@
   }
 
 @layer components{
-
-  .dotted-background{
-    position: relative;
-    --mask-position: 0px 0px;
-  }
-  .dotted-background *{
-    z-index: 1;
-  }
-  .dotted-background::after{
-    box-shadow: inset 0px 0px 100px 0px hsl(var(--background));
-    content: '';
-    position: absolute;
-    z-index: 0;
-    inset: 0;
-    background-image: radial-gradient(circle at 1px 1px, hsl(var(--accent)) 1px, transparent 0);
-    background-size: 1rem 1rem;
-    transition: background-size 2s;
-    background-position: .5rem .5rem;
-    mask-size: contain;
-    animation: dot-shift 5s linear infinite;
-    animation-play-state: paused;
-    background-attachment: fixed;
-    mask-image: radial-gradient(circle at var(--mask-position), rgb(0 0 0), rgb(0 0 0 / 0) 60%);
-  }
-  .dotted-background:hover::after{
-    animation-play-state: running;
-    background-size: 1rem 1rem;
-  }
-
-  @keyframes dot-shift {
-    0% {background-position: 1rem -1rem;}
-    100% {background-position: -1rem 1rem;}
-  }
 }

@@ -40,13 +40,18 @@ export default function CandleStickChart({ data }: props) {
     },
   } satisfies ChartConfig;
 
+  if (data.some((item) => !item)) {
+    return <h1>No data found</h1>;
+  }
 
   return (
     <ChartContainer className="min-h[200px]" config={chartConfig}>
       <ComposedChart accessibilityLayer data={chartData}>
-
         <XAxis dataKey={"date"} interval="equidistantPreserveStart"></XAxis>
-        <YAxis padding={{ top: 20 , bottom:20}} domain={['min', 'max']}></YAxis>
+        <YAxis
+          padding={{ top: 20, bottom: 20 }}
+          domain={["min", "max"]}
+        ></YAxis>
         <Bar dataKey={"open_close"} fill="hsl(var(--win))">
           <ErrorBar
             dataKey={"high_low"}
@@ -54,17 +59,19 @@ export default function CandleStickChart({ data }: props) {
             strokeWidth={2}
             stroke="hsl(var(--foreground)/.5)"
           ></ErrorBar>
-          {chartData.map((entry, index) => (
-            <Cell
-              key={index}
-              radius={4}
-              fill={
-                data[index].close > data[index].open
-                  ? "hsl(var(--win))"
-                  : "hsl(var(--loss))"
-              }
-            />
-          ))}
+          {chartData.map((entry, index) => {
+            return (
+              <Cell
+                key={index}
+                radius={4}
+                fill={
+                  entry?.isPositive
+                    ? "hsl(var(--win))"
+                    : "hsl(var(--loss))"
+                }
+              />
+            );
+          })}
         </Bar>
       </ComposedChart>
     </ChartContainer>
