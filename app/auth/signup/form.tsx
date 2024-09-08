@@ -105,6 +105,7 @@ export default function SignUpForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Password</FormLabel>
+              <FormMessage />
               <FormControl>
                 <Input
                   className="rounded-b-none border-b-0 focus-visible:ring-2 ring-inset"
@@ -113,7 +114,6 @@ export default function SignUpForm() {
                   {...field}
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />

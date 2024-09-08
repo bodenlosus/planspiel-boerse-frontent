@@ -1,15 +1,22 @@
 "use client";
 
-import { HandCoins, Home, Settings } from "lucide-react";
+import { HandCoins, Home, Settings, SquarePercent } from "lucide-react";
 
 import { ModeToggle } from "./mode_toggle";
 import { NavBarPageButton } from "./page_button";
 import { Separator } from "@/components/ui/separator";
 import { UserProfile } from "./profile";
+import { cn } from "@/lib/utils";
 
-export function NavBar() {
+interface NavBarProps{
+  className: string
+}
+
+export function NavBar({className}:NavBarProps) {
   return (
-    <nav className="flex flex-row w-fit min-w-fit h-min sm:flex-col sm:h-lvh sm:w-fit sm:min-w-fit items-start justify-between p-2 max-sm:m-3 max-sm:rounded-lg ">
+    <nav className={cn("flex flex-row w-fit min-w-fit h-min sm:flex-col sm:h-lvh sm:w-fit sm:min-w-fit items-start justify-between p-2 max-sm:m-3 max-sm:rounded-lg ",
+      className
+    )}>
       <div className="flex flex-row max-sm:space-x-3 sm:flex-col sm:space-y-3 max-sm:grow max-sm:justify-around w-full">
         {/* User Profile */}
         <UserProfile userName="Johannes Schmidt" />
@@ -26,6 +33,10 @@ export function NavBar() {
           link="/transactions"
         >
           <HandCoins className="size-5 max-sm:size-6" />
+        </NavBarPageButton>
+
+        <NavBarPageButton usePath title="Stock" link="/dashboard/stock">
+          <SquarePercent className="size-5 max-sm:size-6" />
         </NavBarPageButton>
 
         <NavBarPageButton usePath title="Settings" link="/settings">
