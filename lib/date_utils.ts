@@ -4,12 +4,14 @@ export const getCurrentDate = () => new Date();
 
 export const getDateCertainDaysAgo = (days: number) => {
   const date = new Date();
-  date.setDate(date.getDate() - days);
+  date.setUTCHours(0, 0, 0, 0);
+  date.setUTCDate(date.getUTCDate() - days);
   return date;
 };
 
-export const getDateOneWeekAgo = () => {
-  const date = new Date();
-  date.setDate(date.getDate() - 7);
-  return date;
+export const getDateOneWeekAgo = () => getDateCertainDaysAgo(7);
+
+export const getTimeBetweenDates = (startDate: Date, endDate: Date) => {
+  const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
+  return Math.round(diffTime / (1000 * 3600 * 24));
 };

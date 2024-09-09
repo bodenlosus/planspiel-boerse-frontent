@@ -7,21 +7,22 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
 } from "@/components/ui/command";
 import { useEffect, useState } from "react";
 
 import Link from "next/link";
 import { Stock } from "@/database/custom_types";
+import { cn } from "@/lib/utils";
 import { getStockFromSearchString } from "@/database/search_stock";
-import { getStockPagePath } from "./get_stock_path";
+import { getStockPagePath } from "../../../lib/get_stock_path";
 import { useRouter } from "next/navigation";
 
 interface props {
-    doRedirect: boolean;
+  doRedirect: boolean;
+  className?: string;
 }
 
-export default function SearchBar({doRedirect}: props) {
+export default function SearchBar({ doRedirect, className }: props) {
   const router = useRouter();
   const [stocks, setStocks] = useState<Array<Stock>>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -49,7 +50,7 @@ export default function SearchBar({doRedirect}: props) {
     fetchStocks().catch(console.error);
   }, [searchQuery]);
   return (
-    <Command className="border" shouldFilter={false}>
+    <Command className={cn("border", className)} shouldFilter={false}>
       <CommandList>
         <CommandInput
           value={searchQuery}
@@ -61,7 +62,7 @@ export default function SearchBar({doRedirect}: props) {
             }
           }}
         />
-        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandEmpty className="h-min"></CommandEmpty>
         <CommandGroup>
           {stocks.map((stock, index) => (
             <CommandItem key={index}>

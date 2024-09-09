@@ -2,12 +2,9 @@
 import { Bar, Cell, ComposedChart, ErrorBar, XAxis, YAxis } from "recharts";
 import {
   ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
+  ChartContainer
 } from "@/components/ui/chart";
 
-import { Database } from "@/database/supabase_types";
 import toRelativeValues from "./to_relative_values";
 import { StockPrice } from "@/database/custom_types";
 
@@ -30,7 +27,6 @@ interface props {
 
 export default function CandleStickChart({ data }: props) {
   const chartData = toRelativeValues(data); //data
-  console.log(chartData);
   const chartConfig = {
     open: {
       label: "Open",
@@ -65,9 +61,7 @@ export default function CandleStickChart({ data }: props) {
                 key={index}
                 radius={4}
                 fill={
-                  entry?.isPositive
-                    ? "hsl(var(--win))"
-                    : "hsl(var(--loss))"
+                  entry?.isPositive ? "hsl(var(--win))" : "hsl(var(--loss))"
                 }
               />
             );

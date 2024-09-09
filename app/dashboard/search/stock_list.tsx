@@ -1,32 +1,43 @@
 "use client";
 
-import { getCurrentDate, getDateCertainDaysAgo, getDateOneWeekAgo, toISODateOnly } from "@/lib/date_utils";
+import {
+    Card,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Separator } from "@/components/ui/separator";
 import { Stock } from "@/database/custom_types";
+import { getStockPagePath } from "../../../lib/get_stock_path";
 
 interface props {
-    stocks: Array<Stock>;
+  stocks: Array<Stock>;
 }
 export function StockList({ stocks }: props) {
-    return (
-        <div>
-            {stocks.map((stock, index) => (
-                <StockEntry key={index} stock={stock}></StockEntry>
-            ))}
-        </div>
-    );
+  return (
+    <div className="grid grid-flow-row gap-5 mt-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+      {stocks.map((stock, index) => (
+        <StockEntry key={index} stock={stock}></StockEntry>
+      ))}
+    </div>
+  );
 }
 
 function StockEntry({ stock }: { stock: Stock }) {
-    const navigationLink = `/dashboard/stock/${stock.id}}`
-    return (
-        <Link href={navigationLink}>
-        <div>
-            <h2>{stock.name}</h2>
-            <p>{stock.description}</p>
-        </div>
-        </Link>
-    );
+  const navigationLink = getStockPagePath(stock.id);
+  return (
+    <Link href={navigationLink}>
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            {stock.symbol} - {stock.name}
+          </CardTitle>
+          <Separator />
+          <CardDescription>{stock.description}</CardDescription>
+        </CardHeader>
+      </Card>
+    </Link>
+  );
 }
