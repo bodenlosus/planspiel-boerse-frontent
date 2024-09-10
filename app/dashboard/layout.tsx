@@ -37,7 +37,7 @@ export default function DashboardLayout({
 
       <body
         className={cn(
-          "h-dvh font-sans antialiased grid grid-rows-[3rem_auto] grid-cols-[min-content_auto]",
+          "h-dvh font-sans antialiased grid grid-rows-[3rem_auto] max-sm:grid-rows-[calc(100vh-3rem)_3rem] grid-cols-[min-content_auto] max-sm:grid-cols-1 overflow-hidden",
           fontSans.variable
         )}
       >
@@ -47,9 +47,9 @@ export default function DashboardLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NavBar className="col-start-1 col-end-2" />
-          <div className="w-auto h-full col-start-2 row-start-1"></div>
-          <div className="col-start-2 row-start-2 flex flex-col-reverse mb-2 mr-2 overflow-hidden bg-muted/5 rounded-lg border px-3 pt-8 pb-4">
+          <NavBar className="col-start-1 col-end-2 max-sm:col-end-1 max-sm:row-start-2 max-sm:grid-rows-1" />
+          <div className="w-auto h-full col-start-2 row-start-1 max-sm:hidden"></div>
+          <div className="col-start-2 max-sm:col-start-1 row-start-2 max-sm:row-start-1 flex flex-col-reverse mb-2 mr-2 overflow-hidden bg-muted/5 rounded-lg border px-3 pt-8 pb-4 max-sm:pb-0 max-sm:px-0 max-sm:mr-0">
             <ScrollArea className="grow px-5 gradient-fade-out">
               <TransactionProvider>{children}</TransactionProvider>
             </ScrollArea>

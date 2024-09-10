@@ -5,25 +5,8 @@ import {
   ChartContainer
 } from "@/components/ui/chart";
 
-import toRelativeValues from "./to_relative_values";
-import { StockPrice } from "@/database/custom_types";
-
-interface props {
-  data: Array<StockPrice>;
-}
-
-// const CustomTooltip = ({ active, payload, label }) => {
-//   if (active && payload && payload.length) {
-//     return (
-//       <div className="custom-tooltip">
-//         <p className="label">{`${label} : ${payload[0].value}`}</p>
-//         <p className="desc">Anything you want can be displayed here.</p>
-//       </div>
-//     );
-//   }
-
-//   return null;
-// };
+import toRelativeValues from "./data_utils";
+import { props } from "./chart_props";
 
 export default function CandleStickChart({ data }: props) {
   const chartData = toRelativeValues(data); //data
@@ -41,7 +24,7 @@ export default function CandleStickChart({ data }: props) {
   }
 
   return (
-    <ChartContainer className="min-h[200px]" config={chartConfig}>
+    <ChartContainer className="min-h[200px] aspect-[4/3]" config={chartConfig}>
       <ComposedChart accessibilityLayer data={chartData}>
         <XAxis dataKey={"date"} interval="equidistantPreserveStart"></XAxis>
         <YAxis
@@ -60,8 +43,9 @@ export default function CandleStickChart({ data }: props) {
               <Cell
                 key={index}
                 radius={4}
+                stroke={entry?.isPositive ? "hsl(var(--win))" : "hsl(var(--loss))"}
                 fill={
-                  entry?.isPositive ? "hsl(var(--win))" : "hsl(var(--loss))"
+                  entry?.isPositive ? "hsl(var(--win), .6)" : "hsl(var(--loss), .6)"
                 }
               />
             );

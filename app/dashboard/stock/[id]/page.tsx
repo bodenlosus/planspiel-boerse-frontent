@@ -8,12 +8,15 @@ import {
   toISODateOnly,
 } from "@/lib/date_utils";
 
+import AreaChart from "@/components/charts/area";
 import { Badge } from "@/components/ui/badge";
-import CandleStickChart from "./candlestick/chart";
+import CandleStickChart from "../../../../components/charts/candle_stick";
+import ChartContainer from "@/components/charts/container";
 import { IntervallContainer } from "./pick_intervall";
 import PriceTable from "@/components/prices/table/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { fetchStockData } from "@/database/fetch_data";
+import { formatter as formatPrices } from "@/lib/formatter";
 import { urlSchema } from "./url_scheme";
 
 export default async function Page({
@@ -42,8 +45,10 @@ export default async function Page({
     );
   }
 
+  const formattedPrices = formatPrices(prices);
+
   return (
-    <main className="w-full h-full overflow-hidden grid sm:grid-cols-2 md:grid-cols-4 grid-rows-3 gap-5 max-sm:grid-rows-[min-content]">
+    <main className="w-full h-full overflow-hidden grid sm:grid-cols-2 md:grid-cols-4 gap-5 grid-rows-[min-content]">
       <Card className="col-span-1 row-span-1 max-sm:col-span-2">
         <CardHeader className="flex-row flex-wrap justify-left gap-x-4 gap-y-1">
           <CardTitle className="text-3xl font-extrabold">
@@ -81,7 +86,7 @@ export default async function Page({
         </CardHeader>
 
         <CardContent className="grid grid-cols-1 gap-3">
-          <CandleStickChart data={prices}></CandleStickChart>
+          <ChartContainer data={formattedPrices}></ChartContainer>
         </CardContent>
       </Card>
       <Card className="col-span-2 row-span-2 md:row-start-2">
@@ -92,8 +97,8 @@ export default async function Page({
         </CardHeader>
 
         <CardContent className="grid grid-cols-1 gap-3">
-          <ScrollArea className="w-full aspect-video rounded-md border pr-3">
-            <PriceTable prices={prices} />
+          <ScrollArea className="w-full aspect-[4/3] rounded-md border pr-3">
+            <PriceTable prices={formattedPrices} />
           </ScrollArea>
         </CardContent>
       </Card>

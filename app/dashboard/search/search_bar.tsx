@@ -1,5 +1,7 @@
 "use client";
 
+import "@/app/globals.css";
+
 import {
   Command,
   CommandEmpty,

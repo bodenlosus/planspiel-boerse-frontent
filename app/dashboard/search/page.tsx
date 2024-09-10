@@ -35,7 +35,7 @@ export default async function Page({
   return (
     <main className="w-full h-full overflow-hidden">
       <div className="w-full flex justify-center">
-        <SearchBar className="w-full" doRedirect></SearchBar>
+        <SearchBar className="w-full bg-background" doRedirect></SearchBar>
       </div>
       <StockList stocks={stocks}></StockList>
     </main>

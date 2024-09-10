@@ -1,50 +1,53 @@
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 
-import { Database } from "@/database/supabase_types";
 import { StockPrice } from "@/database/custom_types";
+import { cn } from "@/lib/utils";
 
-interface props{
-    prices: Array<StockPrice>
+interface props {
+  prices: Array<StockPrice>;
 }
 
-export default function PriceTable({prices}:props) {
-    return <Table className="w-full">
+export default function PriceTable({ prices }: props) {
+  return (
+    <Table className="min-h[200px]">
       <TableHeader>
-        <TableRow className="bg-muted/30 border-b border-r">
-          <TableHead className="w-[100px] bg-muted/50 border-r">
-            Date
-          </TableHead>
-          <TableHead>Open</TableHead>
-          <TableHead className="bg-muted/30">Close</TableHead>
-          <TableHead>High</TableHead>
-          <TableHead className="bg-muted/30">Low</TableHead>
-          <TableHead>Volume</TableHead>
+        <TableRow className="bg-muted/30 border-b h-min">
+          {["Date", "Open", "Close", "High", "Low", "Volume"].map(
+            (header, index) => (
+              <TableHead
+                key={index}
+                className={cn(
+                  "h-8",
+                  index % 2 ? "" : "bg-muted/30",
+                  index == 0 ? "border-r w-fit" : ""
+                )}
+              >
+                {header}
+              </TableHead>
+            )
+          )}
         </TableRow>
       </TableHeader>
       <TableBody>
         {prices.map((price, index) => (
-          <TableRow className="border-r" key={index}>
-            <TableCell className="bg-muted/40 border-r">
-              {new Date(price.timestamp).toLocaleDateString()}
-            </TableCell>
-            <TableCell>{price.open}€</TableCell>
-            <TableCell className="bg-muted/30">
-              {price.close}€
-            </TableCell>
-            <TableCell>{price.high}€</TableCell>
-            <TableCell className="bg-muted/30">{price.low}€</TableCell>
-            <TableCell>{price.volume}</TableCell>
+          <TableRow className="border-r h-min" key={index}>
+            {Object.values(price).map((value, columnIndex) => (
+              <TableCell className={cn(
+                "py-2 px-2 w-fit hyphens-none text-nowrap",
+                columnIndex % 2 ? "" : "bg-muted/30",
+                columnIndex == 0 ? "border-r" : ""
+              )} key={columnIndex}>{value}</TableCell>
+            ))}
           </TableRow>
         ))}
       </TableBody>
-    </Table>;
-  }
-  
-  
+    </Table>
+  );
+}

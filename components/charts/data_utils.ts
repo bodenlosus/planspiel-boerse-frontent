@@ -3,13 +3,15 @@ import { StockPrice } from "@/database/custom_types";
 
 type priceRow = StockPrice;
 
-interface TtoRelativeValues{
+interface TtoRelativeValues {
   high_low: [number, number];
   open_close: [number, number];
   date: string;
   isPositive: boolean;
 }
-export default function toRelativeValues(data: Array<priceRow>): Array<TtoRelativeValues | null>{
+export default function toRelativeValues(
+  data: Array<priceRow>
+): Array<TtoRelativeValues | null> {
   return data.map((price) => {
     if (!price.open || !price.close || !price.high || !price.low) {
       return null;
@@ -27,5 +29,17 @@ export default function toRelativeValues(data: Array<priceRow>): Array<TtoRelati
       date: price.timestamp,
       isPositive: price.close > price.open,
     };
+  });
+}
+
+export function flattenOpenClose(data: Array<priceRow>) {
+  return data.flatMap((entry) => {
+    if (!entry.open ||!entry.close) {
+      return [];
+    }
+    return [
+      { date: entry.timestamp, value: entry.open },
+      { date: entry.timestamp, value: entry.close },
+    ];
   });
 }

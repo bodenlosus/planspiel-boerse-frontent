@@ -16,11 +16,11 @@ export function NavBar({ className }: NavBarProps) {
   return (
     <nav
       className={cn(
-        "flex min-w-fit flex-col h-lvh w-fit items-start justify-between p-2",
+        "flex flex-col max-sm:h-min max-sm:flex-row h-lvh w-fit max-sm:w-full items-start justify-between p-2 max-sm:pt-0 max-sm:px-[10%]",
         className
       )}
     >
-      <div className="flex flex-col gap-3">
+      <div className="w-full flex flex-col max-sm:flex-row gap-3 max-sm:items-center max-sm:justify-around">
         {/* User Profile */}
         <UserProfile userName="Johannes Schmidt" />
 

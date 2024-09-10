@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { getStockPagePath } from "../../../../lib/get_stock_path";
+import { getStockPagePath } from "@/lib/get_stock_path";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -30,8 +30,6 @@ export default function IntervallPicker({ onValueChange, value }: props) {
     { name: "year", display: "year", days: 365 },
     { name: "5years", display: "5 years", days: 365 * 5 },
   ];
-
-  console.log(value);
 
   const [selected, setSelected] = useState({
     name: `${value}d`,
