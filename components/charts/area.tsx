@@ -8,8 +8,9 @@ import {
 import { flattenOpenClose } from "./data_utils";
 import { props } from "./chart_props";
 import { Gradient, gradientInterface } from "./gradients";
+import { cn } from "@/lib/utils";
 
-export default function AreaChart({ data }: props) {
+export default function AreaChart({ data , className}: props) {
   const chartData = flattenOpenClose(data); //data
   const chartConfig = {
     open: {
@@ -38,7 +39,7 @@ export default function AreaChart({ data }: props) {
   ];
 
   return (
-    <ChartContainer className="min-h[200px] aspect-[4/3]" config={chartConfig}>
+    <ChartContainer className={cn("min-h[200px]", className)} config={chartConfig}>
       <ComposedChart accessibilityLayer data={chartData}>
         <defs>
           {gradients.map((gradient) => (
@@ -46,7 +47,7 @@ export default function AreaChart({ data }: props) {
           ))}
         </defs>
         <XAxis dataKey={"date"} interval="equidistantPreserveStart"></XAxis>
-        <YAxis width={40} padding={{ top: 20 }} domain={["min", "max"]}></YAxis>
+        <YAxis width={45} padding={{ top: 20 }} domain={["min", "max"]}></YAxis>
         <Area
           dataKey={"value"}
           fillOpacity={0.4}

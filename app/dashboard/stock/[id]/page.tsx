@@ -10,11 +10,13 @@ import {
 
 import AreaChart from "@/components/charts/area";
 import { Badge } from "@/components/ui/badge";
-import CandleStickChart from "../../../../components/charts/candle_stick";
+import CandleStickChart from "@/components/charts/candle_stick";
 import ChartContainer from "@/components/charts/container";
 import { IntervallContainer } from "./pick_intervall";
 import PriceTable from "@/components/prices/table/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import StockStats from "./stat";
 import { fetchStockData } from "@/database/fetch_data";
 import { formatter as formatPrices } from "@/lib/formatter";
 import { urlSchema } from "./url_scheme";
@@ -29,13 +31,15 @@ export default async function Page({
   let urlParams;
   try {
     urlParams = urlSchema({
-      start: toISODateOnly(getCurrentDate()),
-      end: toISODateOnly(getDateOneWeekAgo()),
+      start: toISODateOnly(getDateOneWeekAgo()),
+      end: toISODateOnly(getCurrentDate()),
     }).parse({ ...searchParams, ...params });
   } catch (error) {
     console.error("Invalid URL parameters:");
     return <h1>Invalid URL parameters:</h1>;
   }
+
+  console.log(urlParams);
 
   const { info, prices, success } = await fetchStockData(urlParams);
 
@@ -48,8 +52,8 @@ export default async function Page({
   const formattedPrices = formatPrices(prices);
 
   return (
-    <main className="w-full h-full overflow-hidden grid sm:grid-cols-2 md:grid-cols-4 gap-5 grid-rows-[min-content]">
-      <Card className="col-span-1 row-span-1 max-sm:col-span-2">
+    <main className="w-full h-full overflow-hidden grid sm:grid-cols-2 md:grid-cols-4 gap-5 grid-rows-[masonry]">
+      <Card className="col-span-2">
         <CardHeader className="flex-row flex-wrap justify-left gap-x-4 gap-y-1">
           <CardTitle className="text-3xl font-extrabold">
             {info[0].symbol}
@@ -58,9 +62,8 @@ export default async function Page({
           <h1>{info[0].name}</h1>
           <Badge className="w-fit">{info[0].description}</Badge>
         </CardHeader>
-
         <CardContent className="grid grid-cols-1 gap-3">
-          <div></div>
+          <StockStats data={formattedPrices.slice(1)}></StockStats>
         </CardContent>
       </Card>
       <Card className="col-span-1 row-span-1 max-sm:col-span-2">
@@ -97,8 +100,8 @@ export default async function Page({
         </CardHeader>
 
         <CardContent className="grid grid-cols-1 gap-3">
-          <ScrollArea className="w-full aspect-[4/3] rounded-md border pr-3">
-            <PriceTable prices={formattedPrices} />
+          <ScrollArea className="w-full max-md:aspect-[4/3] aspect-video rounded-md border pr-3">
+            <PriceTable prices={formattedPrices.reverse()} />
           </ScrollArea>
         </CardContent>
       </Card>

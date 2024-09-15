@@ -7,8 +7,9 @@ import {
 
 import toRelativeValues from "./data_utils";
 import { props } from "./chart_props";
+import { cn } from "@/lib/utils";
 
-export default function CandleStickChart({ data }: props) {
+export default function CandleStickChart({ data, className }: props) {
   const chartData = toRelativeValues(data); //data
   const chartConfig = {
     open: {
@@ -24,10 +25,11 @@ export default function CandleStickChart({ data }: props) {
   }
 
   return (
-    <ChartContainer className="min-h[200px] aspect-[4/3]" config={chartConfig}>
+    <ChartContainer className={cn("min-h[200px]", className)} config={chartConfig}>
       <ComposedChart accessibilityLayer data={chartData}>
         <XAxis dataKey={"date"} interval="equidistantPreserveStart"></XAxis>
         <YAxis
+          width={45}
           padding={{ top: 20, bottom: 20 }}
           domain={["min", "max"]}
         ></YAxis>

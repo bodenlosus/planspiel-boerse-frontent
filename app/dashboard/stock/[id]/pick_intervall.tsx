@@ -25,6 +25,7 @@ export default function IntervallPicker({ onValueChange, value }: props) {
   }
   const intervallTemplates: Array<IntervallType> = [
     { name: "7d", display: "7 days", days: 7 },
+    { name: "14d", display: "14 days", days: 14 },
     { name: "30d", display: "30 days", days: 30 },
     { name: "quarter", display: "quarter", days: 92 },
     { name: "year", display: "year", days: 365 },

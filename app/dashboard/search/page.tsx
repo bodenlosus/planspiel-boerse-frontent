@@ -1,11 +1,11 @@
 "use server";
 
+import SearchBar, { SearchBarPopOut } from "../../../components/search_bar";
 import {
   TgetStockFromSearchString,
   getStockFromSearchString,
 } from "@/database/search_stock";
 
-import SearchBar from "./search_bar";
 import { StockList } from "./stock_list";
 import { urlSchema } from "./url_scheme";
 
@@ -23,7 +23,7 @@ export default async function Page({
   }
 
   const { stocks, error, success }: TgetStockFromSearchString = urlParams.query
-    ? await getStockFromSearchString(urlParams.query)
+    ? await getStockFromSearchString(urlParams.query, 5)
     : { stocks: [], error: null, success: false };
 
   if (error) {
@@ -35,7 +35,7 @@ export default async function Page({
   return (
     <main className="w-full h-full overflow-hidden">
       <div className="w-full flex justify-center">
-        <SearchBar className="w-full bg-background" doRedirect></SearchBar>
+        <SearchBar className="w-full bg-background" doRedirect/>
       </div>
       <StockList stocks={stocks}></StockList>
     </main>

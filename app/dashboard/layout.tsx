@@ -5,6 +5,7 @@ import { Inter as FontSans } from "next/font/google";
 import type { Metadata } from "next";
 import { NavBar } from "@/components/navbar/navbar";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { SearchBarPopOut } from "@/components/search_bar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { TransactionProvider } from "@/lib/transactions/transaction_provider";
@@ -48,8 +49,16 @@ export default function DashboardLayout({
           disableTransitionOnChange
         >
           <NavBar className="col-start-1 col-end-2 max-sm:col-end-1 max-sm:row-start-2 max-sm:grid-rows-1" />
-          <div className="w-auto h-full col-start-2 row-start-1 max-sm:hidden"></div>
-          <div className="col-start-2 max-sm:col-start-1 row-start-2 max-sm:row-start-1 flex flex-col-reverse mb-2 mr-2 overflow-hidden bg-muted/5 rounded-lg border px-3 pt-8 pb-4 max-sm:pb-0 max-sm:px-0 max-sm:mr-0">
+          <div className="w-auto h-full col-start-2 row-start-1 max-sm:hidden flex items-center justify-between mr-6">
+            <div></div>
+            <SearchBarPopOut className="" doRedirect />
+          </div>
+          <div className={
+            cn(
+              "col-start-2 row-start-2  flex flex-col-reverse mb-2 mr-2 overflow-hidden bg-muted/5 rounded-lg border px-3 pt-8 pb-4", 
+              "max-sm:col-start-1 max-sm:row-start-1 max-sm:pb-0 max-sm:px-0 max-sm:mr-0"
+          )}>
+            
             <ScrollArea className="grow px-5 gradient-fade-out">
               <TransactionProvider>{children}</TransactionProvider>
             </ScrollArea>

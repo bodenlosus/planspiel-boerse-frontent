@@ -8,9 +8,9 @@ export interface TgetStockFromSearchString{
     success: boolean;
 }
 
-export async function getStockFromSearchString(searchQuery: string): Promise<TgetStockFromSearchString> {
+export async function getStockFromSearchString(searchQuery: string, limit: number): Promise<TgetStockFromSearchString> {
     const { data, error } = await supabase
-        .rpc('search_stock_info', { search_query: searchQuery });
+        .rpc('search_stock_info', { search_query: searchQuery, limit_arg: limit });
     
     if (error) {
         console.error('Error:', error);

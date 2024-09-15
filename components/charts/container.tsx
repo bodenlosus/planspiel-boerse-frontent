@@ -8,17 +8,17 @@ import AreaChart from "./area";
 import CandleStickChart from "./candle_stick";
 import { props } from "./chart_props";
 
-export default function ChartContainer({ data }: props) {
+export default function ChartContainer({ data, className }: props) {
   return (
     <Tabs
       defaultValue="line"
       className="w-full border rounded-md overflow-hidden"
     >
       <TabsContent value="candlestick">
-        <CandleStickChart data={data} />
+        <CandleStickChart className="max-md:aspect-[4/3] aspect-video" data={data} />
       </TabsContent>
       <TabsContent value="line">
-        <AreaChart data={data} />
+        <AreaChart className="max-md:aspect-[4/3] aspect-video" data={data} />
       </TabsContent>
       <div className="w-full bg-muted/50 rounded-sm">
         <TabsList className="bg-transparent">
