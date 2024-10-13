@@ -1,11 +1,10 @@
 import "@/app/globals.css";
 
-import { Rubik as FontSans } from "next/font/google";
+import { Inter as FontSans } from "next/font/google";
+import Image from "next/image";
 import type { Metadata } from "next";
-import { NavBar } from "@/components/navbar/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
-import { TransactionProvider } from "@/lib/transactions/transaction_provider";
 import { cn } from "@/lib/utils";
 
 const inter = FontSans({ subsets: ["latin"] });
@@ -32,7 +31,7 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          "h-dvh bg-background font-sans antialiased flex flex-col-reverse sm:flex-row w-full",
+          "h-dvh bg-background font-sans antialiased flex flex-col overflow-hidden w-full",
           fontSans.variable
         )}
       >
@@ -42,6 +41,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Image src={"/frosted.png"} alt="" width={1920} height={1080} className="absolute -z-10 aspect-video opacity-70 max-h-nonee max-w-none min-w-full min-h-full"></Image>
+          <div className='absolute w-[calc(100%-4rem)] left-1/2 -translate-x-1/2 pt-8 pb-8 px-2 flex flex-row items-center gap-4 justify-center flex-wrap overflow-hidden border-b'>
+        <Image src={'/logo_unrounded.svg'} alt={''} width={48} height={48} className='border rounded-md shadow-md shrink-0 leading-none'></Image>
+        <div className='h-min text-2xl font-semibold tracking-wide overflow-x-hidden'>Planspiel<br/> Boerse</div>
+        </div>
           {children}
         </ThemeProvider>
         <Toaster />

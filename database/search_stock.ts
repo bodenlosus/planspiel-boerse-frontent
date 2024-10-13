@@ -1,6 +1,6 @@
 import { PostgrestError } from "@supabase/supabase-js";
 import { Stock } from "./custom_types";
-import { supabase } from "./client";
+import { supabase } from "../utils/supabase/client";
 
 export interface TgetStockFromSearchString{
     stocks: Array<Stock>;

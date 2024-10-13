@@ -1,6 +1,6 @@
-import { StockPrice } from "@/database/custom_types";
+import { CleanedStockPrice } from "@/database/custom_types";
+import { ComponentPropsWithoutRef } from "react";
 
-export interface props {
-    data: Array<StockPrice>;
-    className?: string;
+export interface props extends ComponentPropsWithoutRef<'div'>{
+    data: Array<CleanedStockPrice | null>;
   }

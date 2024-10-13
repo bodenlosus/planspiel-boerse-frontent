@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import React from 'react'
 import { Stock } from "@/database/custom_types";
 import { cn } from "@/lib/utils";
 import { getStockFromSearchString } from "@/database/search_stock";
@@ -31,7 +32,6 @@ export default function SearchBar({ doRedirect, className }: props) {
   const router = useRouter();
   const [stocks, setStocks] = useState<Array<Stock>>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  console.log(stocks, searchQuery);
   useEffect(() => {
     // declare the data fetching function// for debugging purposes, remove
     const fetchStocks = async () => {
@@ -55,15 +55,15 @@ export default function SearchBar({ doRedirect, className }: props) {
     fetchStocks().catch(console.error);
   }, [searchQuery]);
   return (
-    <Command className={cn("border", className)} shouldFilter={false}>
-      <CommandList>
+    <Command className={cn("border-none inner-shadow", className)} shouldFilter={false}>
+      <CommandList className="border-none">
         <CommandInput
           value={searchQuery}
           placeholder="Search for a Stock by Symbol, Name, Description"
           onValueChange={setSearchQuery}
           onKeyDown={(event) => {
             if (event.key === "Enter" && doRedirect && searchQuery) {
-              router.push(`/dashboard/search?query=${searchQuery}`);
+              router.push(`/search?query=${searchQuery}`);
             }
           }}
         />
@@ -82,22 +82,20 @@ export default function SearchBar({ doRedirect, className }: props) {
   );
 }
 
-export function SearchBarPopOut({ doRedirect, className }: props) {
+interface PopOutProps extends props {
+  trigger: (props: Object) => React.ReactNode 
+}
+
+export function SearchBarPopOut({ doRedirect, className, trigger}: PopOutProps) {
   const [open, setOpen] = useState(false);
+  const SearchBarTrigger = trigger({onClick: () => setOpen(true)})
   return (
     <>
-      <Button
-        className="text-muted-foreground flex flex-row gap-1 h-min py-2 text-xs"
-        variant={"outline"}
-        onClick={() => setOpen(true)}
-      >
-        <Search className="size-4" />
-        Click to search ...
-      </Button>
+        {SearchBarTrigger}
       <CommandDialog open={open} onOpenChange={setOpen}>
         <SearchBar
           doRedirect={doRedirect}
-          className={cn("w-full", className)}
+          className={cn("w-full border", className)}
         />
       </CommandDialog>
     </>

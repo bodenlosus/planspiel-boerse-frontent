@@ -13,7 +13,9 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { signup } from "../actions_client";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -22,6 +24,7 @@ const formSchema = z
     fullName: z
       .string({ message: "Please provide your full name" })
       .trim()
+      .regex(/^[\w\s]*$/, { message: "Can only include letters and numbers." })
       .min(1)
       .max(100),
     email: z.string().trim().email({
@@ -49,6 +52,7 @@ const formSchema = z
   });
 
 export default function SignUpForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -60,7 +64,7 @@ export default function SignUpForm() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    signup(router.push, values)
   }
 
   return (

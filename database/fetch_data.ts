@@ -1,7 +1,7 @@
 import { Stock, StockPrice } from "./custom_types";
 
 import { Database } from "./supabase_types";
-import { supabase } from "./client";
+import { supabase } from "../utils/supabase/client";
 
 export async function fetchPricesForInterval(
   id: number,
@@ -60,7 +60,7 @@ export async function fetchLastPrices(args: {
 export interface TfetchStockData {
   info: Array<Stock>;
   prices: Array<StockPrice>;
-  success: boolean;
+  error?: Error;
 }
 export async function fetchStockData(args: {
   id: number;
@@ -83,20 +83,19 @@ export async function fetchStockData(args: {
     // Check if the responses have data
     if (!infoResponse.count || !priceResponse.count) {
       console.error("No data found in the database", )
-      return { info: [], prices: [], success: false };
+      return { info: [], prices: [], error:new Error(`No data present for ${args.start} - ${args.end}`) };
     }
 
     return {
       info: infoResponse.data,
       prices: priceResponse.data,
-      success: true,
     };
   } catch (error) {
     console.error("Error:", error);
+    return {
+      info: [],
+      prices: [],
+      error: new Error(`Failed to fetch data`, {cause: error})
+    };
   }
-  return {
-    info: [],
-    prices: [],
-    success: false,
-  };
 }

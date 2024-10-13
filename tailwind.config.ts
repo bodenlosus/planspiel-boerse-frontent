@@ -1,15 +1,15 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
-import defaultTheme from 'tailwindcss/defaultTheme'
+import defaultTheme from "tailwindcss/defaultTheme";
 
 const config = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -20,7 +20,8 @@ const config = {
       },
     },
     fontFamily: {
-      'sans': ["var(--font-sans)", ...defaultTheme.fontFamily.sans],
+      sans: ["var(--font-sans)", ...defaultTheme.fontFamily.sans],
+      mono: ["var(--font-mono)", ...defaultTheme.fontFamily.sans],
     },
     extend: {
       colors: {
@@ -32,6 +33,7 @@ const config = {
         win: "hsl(var(--win))",
         loss: "hsl(var(--loss))",
         blue: "hsl(var(--blue))",
+        blueAlt: "hsl(var(--blueAlt))",
         green: "hsl(var(--green))",
         greenAlt: "hsl(var(--greenAlt))",
         orange: "hsl(var(--orange))",
@@ -89,11 +91,9 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
-
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+} satisfies Config;
 
-
-export default config
+export default config;

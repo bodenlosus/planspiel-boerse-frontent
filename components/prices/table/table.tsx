@@ -7,46 +7,66 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { StockPrice } from "@/database/custom_types";
+import { CellValueTypes } from "./cell";
+import { CleanedStockPrice } from "@/database/custom_types";
+import PriceRow from "./row";
+import { StockPrice } from "../../../database/custom_types";
 import { cn } from "@/lib/utils";
 
-interface props {
-  prices: Array<StockPrice>;
+interface props extends React.ComponentPropsWithRef<"div"> {
+  prices: Array<CleanedStockPrice | null>;
 }
 
-export default function PriceTable({ prices }: props) {
+export interface PriceColumnOptions {
+  type: CellValueTypes;
+  indicator?: boolean;
+  display: string;
+} 
+export default function PriceTable({ prices, className }: props) {
+  
+  const columns: Record<string, PriceColumnOptions> = {
+    timestamp: {type: "string", display: "Date"},
+    profit: {type: "float", indicator: true, display: "Profit"},
+    open: {type: "float", display: "Open"},
+    close: {type: "float", display: "Close"},
+    high: {type: "float", display: "High"},
+    low: {type: "float", display: "Low"},
+    volume: {type: "int", display: "Volume"},
+  };
   return (
-    <Table className="min-h[200px]">
+    <Table className={cn("min-h[200px]", className)}>
       <TableHeader>
-        <TableRow className="bg-muted/30 border-b h-min">
-          {["Date", "Open", "Close", "High", "Low", "Volume"].map(
-            (header, index) => (
+        <TableRow className="bg-muted/50 border-b h-min">
+          {Object.values(columns).map(({display}, index) => {
+            const isEven = index % 2 === 0;
+            return (
               <TableHead
                 key={index}
                 className={cn(
-                  "h-8",
-                  index % 2 ? "" : "bg-muted/30",
-                  index == 0 ? "border-r w-fit" : ""
+                  "h-8 text-base border-r font-semibold",
+                  isEven && "bg-muted/30",
+                  index > 0 ? "" : " w-fit"
                 )}
               >
-                {header}
+                {display}
               </TableHead>
-            )
-          )}
+            );
+          })}
         </TableRow>
       </TableHeader>
       <TableBody>
-        {prices.map((price, index) => (
-          <TableRow className="border-r h-min" key={index}>
-            {Object.values(price).map((value, columnIndex) => (
-              <TableCell className={cn(
-                "py-2 px-2 w-fit hyphens-none text-nowrap",
-                columnIndex % 2 ? "" : "bg-muted/30",
-                columnIndex == 0 ? "border-r" : ""
-              )} key={columnIndex}>{value}</TableCell>
-            ))}
-          </TableRow>
-        ))}
+        {prices.map((price, index) => {
+          if (!price) {
+            return;
+          }
+          return (
+            <PriceRow
+              columns={columns}
+              key={index}
+              price={{...price, profit:price.close - price.open}}
+            />
+          );
+        })}
       </TableBody>
     </Table>
   );
